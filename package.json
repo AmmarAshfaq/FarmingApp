@@ -1,0 +1,43 @@
+{
+  "name": "Routes",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
+  },
+  "dependencies": {
+    "native-base": "^2.8.0",
+    "react": "16.3.1",
+    "react-native": "0.55.4",
+    "react-native-elevated-view": "0.0.6",
+    "react-native-image-picker": "^0.27.2",
+    "react-native-image-resizer": "^1.0.0",
+    "react-native-material-ripple": "^0.8.0",
+    "react-native-vector-icons": "^4.6.0",
+    "react-navigation": "^2.17.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-observable": "0.19.0",
+    "rxjs": "5.5.1",
+    "socket.io-client": "^2.1.1",
+    "validator": "^10.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "babel-jest": "23.6.0",
+    "babel-preset-react-native": "2.1.0",
+    "jest": "23.6.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
