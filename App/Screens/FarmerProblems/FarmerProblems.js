@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image, Dimensions, ScrollView, TouchableOpacity, ToastAndroid, AsyncStorage, FlatList, Modal } from 'react-native';
-import { Input, Button, Picker, Icon, Drawer, Thumbnail, ListItem, Textarea, Spinner, Item, Card, CardItem } from "native-base";
+import { Platform, StyleSheet, Text, View, Image, Dimensions, ScrollView,Button, TouchableOpacity, ToastAndroid, AsyncStorage, FlatList, Modal } from 'react-native';
+import { Input,  Picker, Icon, Drawer, Thumbnail, ListItem, Textarea, Spinner, Item, Card, CardItem } from "native-base";
 const { width, height, scale, fontScale } = Dimensions.get("window");
 import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AppActions from '../../Store/Actions/AppActions/index';
 import validator from "validator";
 
-
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 const mapStateToProps = state => {
     console.log("reducer state", state);
     return {
@@ -32,8 +32,42 @@ const mapDispatchToProps = dispatch => {
 class FarmerProblems extends Component {
     constructor(props) {
         super(props);
-        this.state = { showModal: false, _id: "", name: "", date: "", description: "", image_url: "", comments: [], commentText: "" }
+        this.state = { showModal: false, _id: "", name: "", date: "", description: "", image_url: "", comments: [], commentText: "",currentPositionSec: 0,
+            currentDurationSec: 0,
+            playTime: '00:00:00',
+            duration: '00:00:00', }
+        const audioRecorderPlayer = new AudioRecorderPlayer();
     }
+
+    onStartPlay = async () => {
+        console.log('onStartPlay');
+        const msg = await this.audioRecorderPlayer.startPlayer();
+        console.log(msg);
+        this.audioRecorderPlayer.addPlayBackListener((e) => {
+            if (e.current_position === e.duration) {
+                console.log('finished');
+                this.audioRecorderPlayer.stopPlayer();
+            }
+            this.setState({
+                currentPositionSec: e.current_position,
+                currentDurationSec: e.duration,
+                playTime: this.audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+                duration: this.audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+            });
+            return;
+        });
+    }
+
+    onPausePlay = async () => {
+        await this.audioRecorderPlayer.pausePlayer();
+    }
+
+    onStopPlay = async () => {
+        console.log('onStopPlay');
+        this.audioRecorderPlayer.stopPlayer();
+        this.audioRecorderPlayer.removePlayBackListener();
+    }
+
     componentDidMount() {
         this.props.getAllProblems(this.props.token);
     }
@@ -87,7 +121,7 @@ class FarmerProblems extends Component {
                             </View>
 
                             <View style={{ flex: 0.95, }} >
-                                <View style={{ flex: 0.45, width, flexDirection: 'row', justifyContent: "center" }} >
+                                <View style={{ flex: 0.35, width, flexDirection: 'row', justifyContent: "center" }} >
                                     <Image source={this.state.image_url ? { uri: this.state.image_url } : require("../../../assets/images/picture.png")} style={this.state.image_url ? { width: "80%", height: "100%" } : { width: width / 3, height: height / 6 }} resizeMode={this.state.image_url ? "stretch" : "contain"} />
                                 </View>
                                 <View style={{ flex: 0.3, justifyContent: "center", }} >
@@ -98,6 +132,32 @@ class FarmerProblems extends Component {
                                     <View style={{ flex: 0.3, padding: 10 }} >
                                         <Text style={{ color: "#fff", fontWeight: "bold" }}  > Description </Text>
                                         <Text style={{ color: "#fff", }} > {this.state.description} </Text>
+                                    </View>
+                                    <View style={{ flex: 0.3, padding: 10,flexDirection:'row' }} >
+                                        {/*<Button*/}
+                                            {/*title="Play"*/}
+
+                                        {/*/>*/}
+
+
+                                        {/*<Button*/}
+                                        {/*title="Pause"*/}
+
+                                        {/*/>*/}
+                                        {/*<Button*/}
+                                            {/*title="Stop"*/}
+
+                                        {/*/>*/}
+
+                                        {/*<Button*/}
+                                            {/*// onPress={onPressLearnMore}*/}
+                                            {/*title="Learn More"*/}
+                                            {/*color="#841584"*/}
+                                            {/*accessibilityLabel="Learn more about this purple button"*/}
+                                        {/*/>*/}
+
+
+
                                     </View>
 
                                 </View>

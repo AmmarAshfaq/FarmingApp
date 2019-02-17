@@ -47,9 +47,11 @@ export default class CompanyPanel extends Component {
                     </View>
                     <View style={{ flex: 0.65, }} >
                         <FlatList data={this.props.drawerDataArray} renderItem={({ item, index }) => (
+
                             <TouchableOpacity onPress={() => item.route && item.route(this)} activeOpacity={0.6} key={index} style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: 10, backgroundColor: "#596275" }} >
-                                {/* <Image source={item.icon} style={{ width: width / 12, height: width / 12, marginRight: 17 }} resizeMode="contain" /> */}
+                                 {/*<Image source={item.icon} style={{ width: width / 12, height: width / 12, marginRight: 17 }} resizeMode="contain" />*/}
                                 <Text style={{ fontFamily: "OpenSans-Regular", fontSize: fontScale * 18, marginRight: "auto", color: '#fff' }} >{item.name}</Text>
+                                <Text>{console.log(item)}</Text>
                             </TouchableOpacity>
                         )
                         }

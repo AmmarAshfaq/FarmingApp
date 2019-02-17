@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import service from "../../Serivces/index";
 import HttpService from '../../Serivces/index';
 const BASE_URL = "https://boiling-headland-82881.herokuapp.com";
-
+// const BASE_URL = "http://localhost:8080/"
+// const BASE_URL = "https://radiant-cove-74469.herokuapp.com";
+// const BASE_URL = " https://powerful-anchorage-99647.herokuapp.com"
 export default class AuthEpic {
 
     static signUp(action$) {

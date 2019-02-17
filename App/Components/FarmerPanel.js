@@ -9,7 +9,7 @@ let ref;
 const drawerDataArray = [
     { name: "Messages", icon: require("../../assets/images/chat.png"), route: (ref) => ref.props.navigation.navigate("categoryList") },
     { name: "Add Problem", icon: require("../../assets/images/warning-sign.png"), route: (ref) => ref.props.navigation.navigate("addProb") },
-    { name: "Payment Term", icon: require("../../assets/images/term.png"), },
+    // { name: "Payment Term", icon: require("../../assets/images/term.png"),route:(ref)=>ref.props.navigation.navigate("paymentTerm") },
     { name: "Add Crop", icon: require("../../assets/images/plant.png"), route: (ref) => ref.props.navigation.navigate("addCrop") },
 
 ];

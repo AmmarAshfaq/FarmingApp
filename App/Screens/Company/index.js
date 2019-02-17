@@ -61,7 +61,11 @@ class Company extends Component {
                         <CompanyPanel navigation={this.props.navigation}
                             user={this.props.user}
                             signOut={this.signOut}
-                            drawerDataArray={[{ name: 'Home' }, { name: 'Messages', route: (ref) => ref.props.navigation.navigate("categoryList") }, { name: 'Payment Term' }, { name: 'Notification' }]} >
+                            drawerDataArray={[{ name: 'Home' }, { name: 'Messages', route: (ref) => ref.props.navigation.navigate("categoryList"),
+                            icon: require("../../../assets/images/chat.png") }, 
+                            // { name: 'Payment Term',icon: require("../../../assets/images/term.png") ,route:(ref)=>ref.props.navigation.navigate("paymentTerm")}
+                            ]
+                            } >
                             <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'center' }}>
                                 <Image style={{ width: width / 4, height: width / 4 }} source={require('../../../assets/images/logo.jpg')} />
                             </View>

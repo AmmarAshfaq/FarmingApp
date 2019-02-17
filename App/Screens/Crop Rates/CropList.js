@@ -5,10 +5,10 @@ import {
   FlatList,
 } from 'react-native'
 import {
-  Text,
-  Icon,
-  Item,
-  Input,
+    Text,
+    Icon,
+    Item,
+    Input, ListItem,
 } from 'native-base'
 import Ripple from 'react-native-material-ripple'
 import ElevatedView from 'react-native-elevated-view'
@@ -64,22 +64,26 @@ class CropList extends Component {
             onChangeText={event => this.changeState(event)}
           />
         </Item>
-        <ElevatedView elevation={3} style={styles.stayElevated} />
+        {/*<ElevatedView elevation={3} style={styles.stayElevated} />*/}
         <FlatList
           data={this.state.selectValue}
           //
           renderItem={({ item }) => (
-            <ElevatedView elevation={3} style={styles.stayElevated}>
-              <Ripple
-                rippleDuration={900}
-                onPress={() => this.props.navigation.navigate('cropPrice')}
-                style={{ flex: 1 }}
-              >
-                <View style={styles.buttonContainer}>
-                  <Text style={styles.heading}>{item.cityName}</Text>
-                </View>
-              </Ripple>
-            </ElevatedView>
+              <ListItem onPress={() => this.props.navigation.navigate('cropPrice')} >
+                  <Text style={{color:'#fff'}}>{item.cityName}</Text>
+                  {/*<ElevatedView elevation={3} style={styles.stayElevated}>*/}
+                  {/*<Ripple*/}
+                  {/*rippleDuration={900}*/}
+                  {/*onPress={() => this.props.navigation.navigate('cropPrice')}*/}
+                  {/*style={{ flex: 1 }}*/}
+                  {/*>*/}
+                  {/*<View style={styles.buttonContainer}>*/}
+                  {/*<Text style={styles.heading}>{item.cityName}</Text>*/}
+                  {/*</View>*/}
+                  {/*</Ripple>*/}
+                  {/*</ElevatedView>*/}
+              </ListItem>
+
           )}
           keyExtractor={(item, index) => index.toString()}
         />

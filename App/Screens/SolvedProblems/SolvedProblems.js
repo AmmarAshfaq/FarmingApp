@@ -64,9 +64,9 @@ class SolvedProblems extends Component {
     render() {
         console.log("problems", this.props.allProblems);
         return (
-            <View style={{ flex: 1 }} >
+            <View style={{ flex: 1,backgroundColor: '#272727' }} >
                 <View style={{ flex: 0.1, alignItems: "center" }} >
-                    <Text style={{ color: "#000", fontWeight: "bold", fontSize: fontScale * 20 }} >Problem List</Text>
+                    <Text style={{  fontWeight: "bold", fontSize: fontScale * 20,color: '#fff', marginTop: height / 40 }} >Problem List</Text>
                 </View>
                 {this.props.isProgress ?
                     <Spinner />
@@ -76,7 +76,7 @@ class SolvedProblems extends Component {
                             item.comments.length > 0
                                 ?
                                 <ListItem onPress={() => this.showModal(index)} >
-                                    <Text>{item.name}</Text>
+                                    <Text style={{color:'#fff'}}>{item.name}</Text>
                                 </ListItem>
                                 :
                                 <View />
@@ -87,9 +87,9 @@ class SolvedProblems extends Component {
                 <Modal presentationStyle={"fullScreen"} visible={this.state.showModal} onRequestClose={() => { this.setState({ showModal: false }) }} >
                     <ScrollView contentContainerStyle={{ height: height - 25, width, justifyContent: "space-between", }} keyboardDismissMode="interactive" keyboardShouldPersistTaps="handled" >
 
-                        <View style={{ flex: 1, justifyContent: "space-between" }}  >
+                        <View style={{ flex: 1, justifyContent: "space-between" ,backgroundColor: "#272727"}}  >
                             <View style={{ flex: 0.08, width, alignItems: "center", justifyContent: "center" }} >
-                                <Text style={{ fontWeight: "bold" }} >Problem Solution</Text>
+                                <Text style={{ fontWeight: "bold", color: '#fff' }} >Problem Solution</Text>
                             </View>
 
                             <View style={{ flex: 0.95, }} >
@@ -98,22 +98,22 @@ class SolvedProblems extends Component {
                                 </View>
                                 <View style={{ flex: 0.3, justifyContent: "center", }} >
                                     <View style={{ flex: 0.2, padding: 10 }} >
-                                        <Text style={{ color: "#000", fontWeight: "bold" }} > Name </Text>
-                                        <Text> {`${this.state.name}\n`} </Text>
+                                        <Text style={{ color: "#fff", fontWeight: "bold" }} > Name </Text>
+                                        <Text style={{ color: "#fff"}}> {`${this.state.name}\n`} </Text>
                                     </View>
                                     <View style={{ flex: 0.3, padding: 10 }} >
-                                        <Text style={{ color: "#000", fontWeight: "bold" }}  > Description </Text>
-                                        <Text> {this.state.description} </Text>
+                                        <Text style={{ color: "#fff", fontWeight: "bold" }}  > Description </Text>
+                                        <Text style={{ color: "#fff"}}> {this.state.description} </Text>
                                     </View>
 
                                 </View>
                                 <View style={{ flex: 0.35, justifyContent: "center" }} >
-                                    <Text style={{ color: "#000", fontSize: fontScale * 18 }} >Comments</Text>
+                                    <Text style={{ color: "#fff", fontSize: fontScale * 18 }} >Comments</Text>
                                     <FlatList data={this.state.comments} renderItem={({ item, index }) =>
                                         <ListItem>
                                             <View style={{ flex: 1 }} >
-                                                <Text style={{ color: "#000", fontWeight: "bold" }} >{item.user_name}</Text>
-                                                <Text> {item.comment} </Text>
+                                                <Text style={{ color: "#fff", fontWeight: "bold" }} >{item.user_name}</Text>
+                                                <Text style={{ color: "#fff"}}> {item.comment} </Text>
                                             </View>
                                         </ListItem>
                                     } />

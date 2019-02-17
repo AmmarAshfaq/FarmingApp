@@ -55,6 +55,7 @@ export default function appReducer(state = INITIAL_STATE, action) {
         case actionTypes.ADD_PROB_DATA_PROG:
             return { ...state, isProgress: true };
         case actionTypes.ADD_PROB_DATA_SUCC:
+            console.log("data comming",action.payload)
             return { ...state, isProgress: false, addProbResponse: action.payload }
         case actionTypes.ADD_PROB_DATA_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload }

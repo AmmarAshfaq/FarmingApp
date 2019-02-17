@@ -15,6 +15,8 @@
     "native-base": "^2.8.0",
     "react": "16.3.1",
     "react-native": "0.55.4",
+    "react-native-audio": "^4.3.0",
+    "react-native-audio-recorder-player": "^2.1.2",
     "react-native-elevated-view": "0.0.6",
     "react-native-image-picker": "^0.27.2",
     "react-native-image-resizer": "^1.0.0",

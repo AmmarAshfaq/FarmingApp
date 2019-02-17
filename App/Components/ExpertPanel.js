@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import validator from "validator";
 const drawerDataArray = [
-    { name: "Messages", route: (ref) => ref.props.navigation.navigate("categoryList") },
+    { name: "Messages", icon: require("../../assets/images/chat.png"), route: (ref) => ref.props.navigation.navigate("categoryList") },
 
-    { name: "Payment Term", },
+    // { name: "Payment Term",  icon: require("../../assets/images/term.png"),route:(ref)=>ref.props.navigation.navigate("paymentTerm")},
 
 
 ];
@@ -51,7 +51,7 @@ export default class ExpertPanel extends Component {
                     <View style={{ flex: 0.65, }} >
                         <FlatList data={drawerDataArray} renderItem={({ item, index }) => (
                             <TouchableOpacity onPress={() => item.route && item.route(this)} activeOpacity={0.6} key={index} style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: 10, backgroundColor: "#596275" }} >
-                                {/* <Image source={item.icon} style={{ width: width / 12, height: width / 12, marginRight: 17 }} resizeMode="contain" /> */}
+                                 <Image source={item.icon} style={{ width: width / 12, height: width / 12, marginRight: 17 }} resizeMode="contain" />
                                 <Text style={{ fontFamily: "OpenSans-Regular", fontSize: fontScale * 18, marginRight: "auto", color: "#fff" }} >{item.name}</Text>
                             </TouchableOpacity>
                         )
@@ -64,6 +64,8 @@ export default class ExpertPanel extends Component {
                 </View>
                 }
                 onClose={() => this.closeDrawer()} >
+                <ScrollView style={{ backgroundColor: '#272727' }} contentContainerStyle={{ height: height - 80, width }} keyboardDismissMode="interactive" keyboardShouldPersistTaps="handled" >
+               
                 <View style={{ flex: 1, backgroundColor: "#272727" }} >
                     <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={require("../../assets/images/logo.jpg")} style={{ width: width / 4, height: width / 4 }} />
@@ -71,6 +73,22 @@ export default class ExpertPanel extends Component {
                         {/* <Thumbnail large source={{ uri: this.props.user.image_url }} /> */}
                     </View>
                     <View style={{ flex: 0.8, justifyContent: "space-around" }} >
+                    <View style={{ flex: 1 / 3, flexDirection: 'row' }}>
+                            <TouchableOpacity style={{ width: width / 2, justifyContent: 'center', alignItems: 'center' }}
+                                onPress={()=>{this.props.navigation.navigate("weather")}}
+                            
+                            >
+                                <Image source={require('../../assets/images/weather.png')} />
+                                <Text style={{ color: '#fff' }}>Weather Cast</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ width: width / 2, justifyContent: 'center', alignItems: 'center' }}
+                                onPress={()=>{this.props.navigation.navigate("cropList")}}
+                            
+                            >
+                                <Image source={require('../../assets/images/exchange.png')} />
+                                <Text style={{ color: '#fff' }}>Current Rates</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={{ flex: 1 / 3, flexDirection: 'row' }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate("farmerProblems")} style={{ width: width / 2, justifyContent: 'center', alignItems: 'center' }}>
                                 <Image source={require('../../assets/images/problem.png')} />
@@ -93,6 +111,8 @@ export default class ExpertPanel extends Component {
                         </View>
                     </View>
                 </View>
+                </ScrollView>
+
             </Drawer>
         )
     }

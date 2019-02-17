@@ -14,6 +14,7 @@ import { Provider } from "react-redux";
 import { store } from '../Store/index';
 import { createStackNavigator } from "react-navigation"
 import SignUp from './SignUp/SignUp';
+import PaymentTerm from './PaymentTerm/PaymentTerm';
 import Home from './Home/Home';
 import Company from './Company';
 import SignIn from './SignIn';
@@ -87,7 +88,8 @@ const RootStack = createStackNavigator({
   chat:Chat,
   cropList:CropList,
   cropPrice:CropPrice,
-  weather:Weather
+  weather:Weather,
+  paymentTerm:PaymentTerm
 
 }, {
     initialRouteName: "signIn",
