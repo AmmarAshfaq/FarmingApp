@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
-
-export default class Weather extends Component {
+import { connect } from 'react-redux';
+import AppActions from '../../Store/Actions/AppActions/index';
+class Weather extends Component {
   static navigationOptions = {
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -14,7 +15,11 @@ export default class Weather extends Component {
     },
     headerRight: <View />
   }
-  render () {
+  componentDidMount() {
+    this.props.getWeatherDetail(this.props.token);
+  }
+  render() {
+    console.log(this.props.weather, "weather")
     const list = [
       { title: 'Karachi', key: "44'C/22'C" },
       { title: 'Lahore', key: "44'C/22'C" },
@@ -30,6 +35,7 @@ export default class Weather extends Component {
       <View style={{ flex: 1, backgroundColor: '#272727' }}>
         <View
           style={{
+            flex: 1,
             marginTop: 10,
             marginBottom: 25,
             backgroundColor: '#F5FCFF',
@@ -41,6 +47,7 @@ export default class Weather extends Component {
         >
           <View
             style={{
+              flex: 0.1,
               padding: 8,
               borderColor: '#000',
               backgroundColor: '#30333645'
@@ -54,85 +61,82 @@ export default class Weather extends Component {
                 alignSelf: 'center'
               }}
             >
-              Today's Weather
+              Weather Detail
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', backgroundColor: '#30333612' }}>
-            <Text style={[styles.tableColumn]}>Temperature(Max/Min)</Text>
-            <Text style={styles.tableColumn}>Humidity</Text>
-            <Text style={styles.tableColumn}>RainFall</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.tableColumn}>44'C/22'C</Text>
-            <Text style={styles.tableColumn}>57%</Text>
-            <Text style={styles.tableColumn}>No</Text>
-          </View>
-        </View>
+          <View style={{ flexDirection: 'row', flex: 0.1, backgroundColor: '#30333612' }}>
+            <View style={{ flex: 0.2,justifyContent:'center',alignItems:'center' }}>
+              <Text style={{ textAlign: 'center', color: '#000' }}>Day</Text>
 
-        <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1, marginLeft: 5,
-            backgroundColor: '#F5FCFF',
-            marginRight: 5, }}>
-          <View style={{ flex: 1, flexDirection: 'column' }}>
-            <Text
-              style={[styles.tableColumn2, { backgroundColor: '#30333645' }]}
-            >
-              Dates
-            </Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Mon</Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Tue</Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Wed</Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Thu</Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Fri</Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Sat</Text>
-            <Text style={[styles.tableColumn2, styles.weekColor]}>Sun</Text>
-          </View>
-          <View style={{ flex: 4, flexDirection: 'row' }}>
-            <View style={{ flexDirection: 'column' }}>
-              <FlatList
-                horizontal
-                data={list}
-                renderItem={({ item }) => (
-                  <View>
-                    <Text
-                      style={[
-                        styles.tableColumn2,
-                        { backgroundColor: '#30333645' }
-                      ]}
-                    >
-                      {item.title}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                    <Text style={[styles.tableColumn2, styles.weekColor]}>
-                      {item.key}
-                    </Text>
-                  </View>
-                )}
-              />
+            </View>
+            <View style={{ flex: 0.8, flexDirection: 'row' }}>
+
+              <Text style={[styles.tableColumn]}>Temperature(Max/Min)</Text>
+              <Text style={styles.tableColumn}>Humidity</Text>
+              <Text style={styles.tableColumn}>RainFall</Text>
             </View>
           </View>
+          <View style={{ flex: 0.7, flexDirection: 'row' }}>
+            <View style={{ flex: 0.2, flexDirection: 'column' }}>
+
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Mon</Text>
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Tue</Text>
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Wed</Text>
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Thu</Text>
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Fri</Text>
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Sat</Text>
+              <Text style={[styles.tableColumn2, styles.weekColor]}>Sun</Text>
+            </View>
+            <View style={{ flex: 0.8 }}>
+
+              {
+                this.props.weather !== null ?
+
+
+                  <FlatList
+                    data={this.props.weather}
+                    style={{ flex: 1, }}
+                    renderItem={({ item }) => (
+                      <View style={{ flexDirection: 'row', flex: 1 }}>
+
+                        <Text style={styles.tableColumn}>{item.temperature.max}'C / {item.temperature.min}'C</Text>
+                        <Text style={styles.tableColumn}>{item.humidity}%</Text>
+                        <Text style={styles.tableColumn}>{item.rain.main}</Text>
+                      </View>
+                    )} />
+                  :
+                  <View style={{ flexDirection: 'row', flex: 0.1 }}>
+
+                    <Text style={styles.tableColumn}>No Data</Text>
+                    <Text style={styles.tableColumn}>No Data</Text>
+                    <Text style={styles.tableColumn}>No Data</Text>
+                  </View>
+              }
+            </View>
+
+          </View>
+
         </View>
+
+
       </View>
     )
   }
 }
-
+function mapDispatchToProps(dispatch) {
+  return {
+    getWeatherDetail: (token) => {
+      dispatch(AppActions.getWeatherDetail(token))
+    }
+  }
+}
+function mapStateToProps(state) {
+  return {
+    token: state.authReducer["token"],
+    weather: state.appRecuder["weatherResponse"]
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Weather);
 const styles = StyleSheet.create({
   todayData: {
     justifyContent: 'space-around',
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   tableColumn: {
-   
+
     width: '33%',
     alignSelf: 'center',
     textAlign: 'center',
@@ -150,13 +154,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Muli-Ligth'
   },
   tableColumn2: {
-   
+
     textAlign: 'center',
     padding: 8,
     fontWeight: '200',
     color: '#000',
     fontFamily: 'Muli-Ligth'
-    
+
   },
   tableColumn3: {
     width: '50%'

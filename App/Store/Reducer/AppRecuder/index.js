@@ -22,7 +22,8 @@ let INITIAL_STATE = {
     problemComments: null,
     cropDetailsComments: null,
     allUsers: null,
-    privateConversation: null
+    privateConversation: null,
+    weatherResponse: null
 
 }
 
@@ -55,14 +56,19 @@ export default function appReducer(state = INITIAL_STATE, action) {
         case actionTypes.ADD_PROB_DATA_PROG:
             return { ...state, isProgress: true };
         case actionTypes.ADD_PROB_DATA_SUCC:
-            console.log("data comming",action.payload)
+            console.log("data comming", action.payload)
             return { ...state, isProgress: false, addProbResponse: action.payload }
         case actionTypes.ADD_PROB_DATA_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload }
         case actionTypes.CLEAR_ADD_PROB_RESPONSE:
             return { ...state, addProbResponse: null }
 
-
+        case actionTypes.GET_WEATHER_PROG:
+            return { ...state, isProgress: true };
+        case actionTypes.GET_WEATHER_SUCC:
+            return { ...state, isProgress: false, weatherResponse: action.payload };
+        case actionTypes.GET_WEATHER_FAIL:
+            return { ...state, isProgress: false, isError: true, errorText: action.payload }
 
 
         case actionTypes.GET_CROP_PROG:

@@ -66,7 +66,8 @@ export const rootEpic = combineEpics(
   AppEpic.addFarmerProblemComment,
   AppEpic.addCropDetailsComment,
   AppEpic.getAllUsers,
-  AppEpic.getPrivateConversation
+  AppEpic.getPrivateConversation,
+  AppEpic.getWeather
 
   // more epics functions go here
 );

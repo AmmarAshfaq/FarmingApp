@@ -9,7 +9,18 @@ const BASE_URL = "https://boiling-headland-82881.herokuapp.com"
 
 
 export default class AppEpic {
-
+static getWeather(action$){
+    return action$.ofType(actionTypes.GET_WEATHER_PROG).switchMap(({payload})=>{
+        return service.get(`${BASE_URL}/getweather`, { 'Content-Type': 'application/json', 'authorization': payload.token }).pluck("response").map((obj) => {
+            return {
+                type: actionTypes.GET_WEATHER_SUCC,
+                payload: obj
+            }
+        }).catch(error => {
+            return Observable.of({ type: actionTypes.GET_WEATHER_FAIL, payload: error.response ? error.response.error : error.message })
+        })
+    })
+}
     // static addFertilizer(action$) {
     //     return action$.ofType(actionTypes.ADD_FERTILIZER_PROG).switchMap(({ payload }) => {
     //         return service.post(`${BASE_URL}/fertilizer/add`, payload.obj, { 'authorization': payload.token, 'Content-Type': 'multipart/form-data' })

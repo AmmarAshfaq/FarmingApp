@@ -13,6 +13,12 @@ export default class AppActions {
             payload: { body: obj, token }
         }
     }
+    static getWeatherDetail(token){
+        return{
+            type: actionTypes.GET_WEATHER_PROG,
+            payload: { token }
+        }
+    }
     static getAllFertilizers(token) {
         return {
             type: actionTypes.GET_FERTILIZER_PROG,
