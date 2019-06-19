@@ -5,16 +5,17 @@ import {
   FlatList,
 } from 'react-native'
 import {
-    Text,
-    Icon,
-    Item,
-    Input, ListItem,
+  Text,
+  Icon,
+  Item,
+  Input, ListItem,
 } from 'native-base'
 import Ripple from 'react-native-material-ripple'
 import ElevatedView from 'react-native-elevated-view'
-
+import { connect } from 'react-redux';
+import AppActions from '../../Store/Actions/AppActions'
 class CropList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       selectValue: [
@@ -33,7 +34,7 @@ class CropList extends Component {
     this.changeState = this.changeState.bind(this)
   }
   static navigationOptions = {
-   
+
     headerTintColor: '#fff',
     headerTitleStyle: {
       flex: 1,
@@ -52,13 +53,16 @@ class CropList extends Component {
         item => item.cityName.toLowerCase().indexOf(event.toLowerCase()) > -1
       )
     })
-  
+
   }
-  render () {
+  componentDidMount() {
+    this.props.getCropRates(this.props.token)
+  }
+  render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#272727' }}>
         <Item style={{ marginLeft: 10, marginRight: 10 }}>
-          <Icon active name='search' style={{color:'#fff'}}/>
+          <Icon active name='search' style={{ color: '#fff' }} />
           <Input
             placeholder='Search'
             onChangeText={event => this.changeState(event)}
@@ -69,20 +73,20 @@ class CropList extends Component {
           data={this.state.selectValue}
           //
           renderItem={({ item }) => (
-              <ListItem onPress={() => this.props.navigation.navigate('cropPrice')} >
-                  <Text style={{color:'#fff'}}>{item.cityName}</Text>
-                  {/*<ElevatedView elevation={3} style={styles.stayElevated}>*/}
-                  {/*<Ripple*/}
-                  {/*rippleDuration={900}*/}
-                  {/*onPress={() => this.props.navigation.navigate('cropPrice')}*/}
-                  {/*style={{ flex: 1 }}*/}
-                  {/*>*/}
-                  {/*<View style={styles.buttonContainer}>*/}
-                  {/*<Text style={styles.heading}>{item.cityName}</Text>*/}
-                  {/*</View>*/}
-                  {/*</Ripple>*/}
-                  {/*</ElevatedView>*/}
-              </ListItem>
+            <ListItem onPress={() => this.props.navigation.navigate('cropPrice')} >
+              <Text style={{ color: '#fff' }}>{item.cityName}</Text>
+              {/*<ElevatedView elevation={3} style={styles.stayElevated}>*/}
+              {/*<Ripple*/}
+              {/*rippleDuration={900}*/}
+              {/*onPress={() => this.props.navigation.navigate('cropPrice')}*/}
+              {/*style={{ flex: 1 }}*/}
+              {/*>*/}
+              {/*<View style={styles.buttonContainer}>*/}
+              {/*<Text style={styles.heading}>{item.cityName}</Text>*/}
+              {/*</View>*/}
+              {/*</Ripple>*/}
+              {/*</ElevatedView>*/}
+            </ListItem>
 
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -113,4 +117,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CropList
+function mapStateToProps(state) {
+  return {
+    token: state.authReducer["token"],
+  }
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    getCropRates: (token) => {
+      dispatch(AppActions.getCropRate(token))
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CropList);

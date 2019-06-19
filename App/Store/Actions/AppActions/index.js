@@ -1,6 +1,14 @@
 import actionTypes from '../../actionTypes';
 
 export default class AppActions {
+    static getCropRate(token) {
+        console.log(token,"get token")
+        return {
+
+            type: actionTypes.GET_CROPRATES_PROG,
+            payload: { token }
+        }
+    }
     static addFertilizer(obj, token) {
         return {
             type: actionTypes.ADD_FERTILIZER_PROG,
@@ -13,8 +21,8 @@ export default class AppActions {
             payload: { body: obj, token }
         }
     }
-    static getWeatherDetail(token){
-        return{
+    static getWeatherDetail(token) {
+        return {
             type: actionTypes.GET_WEATHER_PROG,
             payload: { token }
         }
