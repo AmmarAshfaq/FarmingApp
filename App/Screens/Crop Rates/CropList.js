@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
-  FlatList,
+  FlatList,Dimensions
 } from 'react-native'
 import {
   Text,
@@ -10,6 +10,7 @@ import {
   Item,
   Input, ListItem,
 } from 'native-base'
+const {width,height} = Dimensions.get('window')
 import Ripple from 'react-native-material-ripple'
 import ElevatedView from 'react-native-elevated-view'
 import { connect } from 'react-redux';
@@ -18,18 +19,7 @@ class CropList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectValue: [
-        { cityName: 'Karachi' },
-        { cityName: 'Lahore' },
-        { cityName: 'Hyderabad' },
-        { cityName: 'Multan' },
-        { cityName: 'Sakhar' },
-        { cityName: 'Peshawar' },
-        { cityName: 'Skardu' },
-        { cityName: 'Murre' },
-        { cityName: 'Faisalabad' },
-        { cityName: 'Islamabad' }
-      ]
+      selectValue: []
     }
     this.changeState = this.changeState.bind(this)
   }
@@ -49,31 +39,40 @@ class CropList extends Component {
   changeState = event => {
     console.log(event)
     this.setState({
-      selectValue: this.state.selectValue.filter(
+      selectValue: this.props.cityList.filter(
         item => item.cityName.toLowerCase().indexOf(event.toLowerCase()) > -1
       )
     })
 
   }
+  cropRatesFunc = (url) => {
+    this.props.getSpecificCropRates(this.props.token, url)
+    this.props.navigation.navigate('cropPrice')
+  }
+
   componentDidMount() {
     this.props.getCropRates(this.props.token)
   }
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#272727' }}>
-        <Item style={{ marginLeft: 10, marginRight: 10 }}>
+        <Text style={{ fontSize: width / 16, fontWeight: 'bold', color: '#fff',textAlign:'center' }}>
+          City List
+        </Text>
+        {/* <Item style={{ marginLeft: 10, marginRight: 10 }}>
           <Icon active name='search' style={{ color: '#fff' }} />
           <Input
             placeholder='Search'
             onChangeText={event => this.changeState(event)}
+            placeholderTextColor="#fff"
           />
-        </Item>
+        </Item> */}
         {/*<ElevatedView elevation={3} style={styles.stayElevated} />*/}
         <FlatList
-          data={this.state.selectValue}
+          data={this.props.cityList}
           //
           renderItem={({ item }) => (
-            <ListItem onPress={() => this.props.navigation.navigate('cropPrice')} >
+            <ListItem onPress={() => this.cropRatesFunc(item.url)}>
               <Text style={{ color: '#fff' }}>{item.cityName}</Text>
               {/*<ElevatedView elevation={3} style={styles.stayElevated}>*/}
               {/*<Ripple*/}
@@ -120,12 +119,16 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     token: state.authReducer["token"],
+    cityList: state.appRecuder["cityList"]
   }
 }
 function mapDispatchToProps(dispatch) {
   return {
     getCropRates: (token) => {
       dispatch(AppActions.getCropRate(token))
+    },
+    getSpecificCropRates: (token, url) => {
+      dispatch(AppActions.getSpecificCropRate(token, url))
     }
   }
 }

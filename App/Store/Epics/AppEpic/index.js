@@ -2,24 +2,46 @@ import actionTypes from '../../actionTypes';
 import { Observable } from 'rxjs';
 import service from "../../Serivces/index";
 import { retry } from 'rxjs/operators';
-const BASE_URL = "https://boiling-headland-82881.herokuapp.com"
+// const BASE_URL = "https://boiling-headland-82881.herokuapp.com"
 // const BASE_URL = "https://radiant-cove-74469.herokuapp.com"
-// const BASE_URL = "http://localhost:8080/"
+const BASE_URL = "http://192.168.100.87:8080"
 // const BASE_URL = " https://powerful-anchorage-99647.herokuapp.com"
 
 
 export default class AppEpic {
 
     static getCropRate(action$) {
-        return action$.ofType(actionTypes.GET_CROPRATES_PROG).switchMap(({ payload }) => {
-            return service.get(`${BASE_URL}/getAllCity`, { 'Content-Type': 'application/json', 'authorization': payload.token,'if-none-match': 'no-match-for-this' }).pluck("response").map((obj) => {
-                console.log(obj,'crop rates')
+        return action$.ofType(actionTypes.GET_CITY_LIST_PROG).switchMap(({ payload }) => {
+            console.log('payload', payload.token)
+            return service.get(`${BASE_URL}/getAllCity`, { 'Content-Type': 'application/json', 'authorization': payload.token }).pluck("response").map((obj) => {
+                console.log(obj, 'city list')
                 return {
-                    type: actionTypes.GET_CROPRATES_SUCC,
+                    type: actionTypes.GET_CITY_LIST_SUCC,
                     payload: obj
                 }
             }).catch(error => {
-                console.log(error,'crop rates')
+                console.log(error, 'crop rates')
+                return Observable.of({ type: actionTypes.GET_CITY_LIST_FAIL, payload: error.response ? error.response.error : error.message })
+            })
+        })
+    }
+    static getSpecificCropRate(action$) {
+        return action$.ofType(actionTypes.GET_CROPRATES_PROG).switchMap(({ payload }) => {
+            console.log('payload', payload.token, payload.url)
+            let objComp = {
+                link: payload.body
+            }
+            return service.post(`${BASE_URL}/getCityData`, objComp, { 'Content-Type': 'application/json', 'authorization': payload.token }).pluck("response").map((obj) => {
+           
+                let arr = [];
+                arr = obj.slice(10)
+                console.log(arr, 'crop rates list')
+                return {
+                    type: actionTypes.GET_CROPRATES_SUCC,
+                    payload: arr
+                }
+            }).catch(error => {
+                console.log(error, 'crop rates')
                 return Observable.of({ type: actionTypes.GET_CROPRATES_FAIL, payload: error.response ? error.response.error : error.message })
             })
         })

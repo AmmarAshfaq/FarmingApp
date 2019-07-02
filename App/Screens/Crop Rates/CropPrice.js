@@ -5,12 +5,15 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  FlatList,Dimensions
 } from 'react-native'
+const {width,height} = Dimensions.get('window')
 import { Text, Icon, Item, Input } from 'native-base'
-
+import { connect } from 'react-redux';
+const numColumns = 2;
 class CropPrice extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       rates: [
@@ -196,63 +199,134 @@ class CropPrice extends Component {
     })
   }
 
-  
-
-  render () {
-    const { navigate } = this.props.navigation
-
+  renderItem = ({ item, index }) => {
+    if (item.empty === true) {
+      return (
+        <View
+          style={{
+            backgroundColor: "#4D243D",
+            alignItems: "center",
+            justifyContent: "center",
+            flex: 1,
+            margin: 1,
+            height: Dimensions.get("window").width / numColumns,
+            backgroundColor: "transparent"
+          }}
+        />
+      );
+    }
     return (
-      <ScrollView>
-        <View style={{ flex: 1, backgroundColor: '#272727' }}>
-          <Item style={{ marginLeft: 10, marginRight: 10 }}>
-            <Icon active name='search' style={{color:'#fff'}} />
-            <Input
-              placeholder='Search'
-              onChangeText={event => this.changeState(event)}
-            />
-          </Item>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 20,
-              marginBottom: 25
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: 'Muli-Ligth',
-                fontWeight: 'normal',
-                color: '#fff'
-              }}
-            >
-              View Price
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          margin: 1
+        }}
+
+        onPress={() => { }}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 0.4 }}>
+            <Text style={{ color: '#fff',fontSize:width/24,fontWeight:'bold' }}>
+              Name: {item.cropName}
             </Text>
           </View>
 
-          <View style={styles.container}>
-            <StatusBar
-             
-              hidden
+          <View style={{ flex: 0.3,fontSize:width/32 }}>
+            <Text style={{ color: '#fff' }}>
+              Max Price: {item.cropMax}
+            </Text>
+          </View>
+          <View style={{ flex: 0.3,fontSize:width/32  }}>
+
+            <Text style={{ color: '#fff' }}>
+              Min Price: {item.cropMin}
+            </Text>
+          </View>
+        </View>
+
+      </TouchableOpacity>
+    );
+  };
+  formatData = (data, numColumns) => {
+    const numberOfFullRows = Math.floor(data.length / numColumns);
+
+    let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
+    while (
+      numberOfElementsLastRow !== numColumns &&
+      numberOfElementsLastRow !== 0
+    ) {
+      data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+      numberOfElementsLastRow++;
+    }
+
+    return data;
+  };
+  render() {
+    const { navigate } = this.props.navigation
+
+    return (
+      <ScrollView style={{backgroundColor: '#272727'}}>
+        <View style={{ flex: 1, backgroundColor: '#272727' }}>
+          <View style={{ flex: 0.2 }}>
+
+            {/* <Item style={{ marginLeft: 10, marginRight: 10 }}>
+              <Icon active name='search' style={{ color: '#fff' }} />
+              <Input
+                placeholder='Search'
+                onChangeText={event => this.changeState(event)}
+              />
+            </Item> */}
+          </View>
+          <View style={{ flex: 0.1 }}>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 20,
+                marginBottom: 25
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: 'Muli-Ligth',
+                  fontWeight: 'normal',
+                  color: '#fff'
+                }}
+              >
+                View Price
+            </Text>
+            </View>
+          </View>
+
+
+          <View style={{ flex: 0.7 }}>
+            <FlatList
+              data={this.formatData(this.props.cropRateList, numColumns)}
+              style={{ flex: 1 }}
+              renderItem={this.renderItem}
+              numColumns={numColumns}
             />
-            {this.state.rates.map((item, key) => (
+          </View>
+          {/* {
+              
+              this.state.rates.map((item, key) => (
               <View
                 style={[styles.row, { flex: 1, flexDirection: 'row' }]}
                 key={key}
               >
                 <TouchableOpacity style={styles.btn}>
-                  <Text style={{ alignSelf:'center',justifyContent:'center',top:20}}>{item.name}</Text>
-                  
-                  <Text style={{alignSelf:'center', justifyContent:'center',top:20 }}>{item.price}</Text>
+                  <Text style={{ alignSelf: 'center', justifyContent: 'center', top: 20 }}>{item.name}</Text>
+
+                  <Text style={{ alignSelf: 'center', justifyContent: 'center', top: 20 }}>{item.price}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn}>
-                  <Text style={{alignSelf:'center',justifyContent:'center',top:20 }}>{item.name}</Text>
-                 
-                  <Text style={{alignSelf:'center', justifyContent:'center',top:20 }}>{item.price}</Text>
+                  <Text style={{ alignSelf: 'center', justifyContent: 'center', top: 20 }}>{item.name}</Text>
+
+                  <Text style={{ alignSelf: 'center', justifyContent: 'center', top: 20 }}>{item.price}</Text>
                 </TouchableOpacity>
               </View>
-            ))}
-          </View>
+            ))} */}
         </View>
       </ScrollView>
     )
@@ -261,7 +335,7 @@ class CropPrice extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    
+
     paddingTop: 0,
 
     alignItems: 'center',
@@ -277,8 +351,8 @@ const styles = StyleSheet.create({
     borderRadius: 80
   },
   btn: {
-    width:100,
-    height:100,
+    width: 100,
+    height: 100,
     margin: 5,
     borderBottomWidth: 2,
     borderBottomWidth: 2,
@@ -289,9 +363,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 1,
-    backgroundColor:'#fff',
-    borderRadius:60
+    backgroundColor: '#fff',
+    borderRadius: 60
   }
 })
 
-export default CropPrice
+const mapStateToProps = (state) => {
+  return {
+    cropRateList: state.appRecuder["cropRateList"]
+  }
+}
+export default connect(mapStateToProps, null)(CropPrice);

@@ -23,7 +23,9 @@ let INITIAL_STATE = {
     cropDetailsComments: null,
     allUsers: null,
     privateConversation: null,
-    weatherResponse: null
+    weatherResponse: null,
+    cityList: [],
+    cropRateList:[]
 
 }
 
@@ -38,6 +40,21 @@ export default function appReducer(state = INITIAL_STATE, action) {
         case actionTypes.CLEAR_ADD_CROP_RESPONSE:
             return { ...state, addCropResponse: null }
 
+
+        case actionTypes.GET_CITY_LIST_PROG:
+            return { ...state, isProgress: true };
+        case actionTypes.GET_CITY_LIST_SUCC:
+            return { ...state, isProgress: false, cityList: action.payload };
+        case actionTypes.GET_CITY_LIST_FAIL:
+            return { ...state, isProgress: false, isError: true }
+
+
+            case actionTypes.GET_CROPRATES_PROG:
+                return { ...state, isProgress: true };
+            case actionTypes.GET_CROPRATES_SUCC:
+                return { ...state, isProgress: false, cropRateList: action.payload };
+            case actionTypes.GET_CROPRATES_FAIL:
+                return { ...state, isProgress: false, isError: true }
 
         case actionTypes.ADD_CROP_COMMENT_PROG:
             return { ...state, isProgress: true };

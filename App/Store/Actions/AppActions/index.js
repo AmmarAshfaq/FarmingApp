@@ -5,8 +5,16 @@ export default class AppActions {
         console.log(token,"get token")
         return {
 
-            type: actionTypes.GET_CROPRATES_PROG,
+            type: actionTypes.GET_CITY_LIST_PROG,
             payload: { token }
+        }
+    }
+    static getSpecificCropRate(token,link) {
+        console.log(token,"get crop token",link)
+        return {
+
+            type: actionTypes.GET_CROPRATES_PROG,
+            payload: { token ,body: link}
         }
     }
     static addFertilizer(obj, token) {
